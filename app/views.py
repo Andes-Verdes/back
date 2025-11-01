@@ -3,6 +3,8 @@ from .models import Faunas,Usuarios,Floras,Imagenes,Parques, Parrafos
 from .serializer import FaunasSerializer,UsuariosSerializer,FlorasSerializer, ImagenesSerializer, ParquesSerializer, ParrafosSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 class FaunasView(APIView):
     def get(self, request):
@@ -10,18 +12,22 @@ class FaunasView(APIView):
         serializer = FaunasSerializer(faunas, many = True)
         return Response(serializer.data)
     def post(self, request):
-        serializer = FaunasSerializer(data=request.data)
+        serializer = FaunasSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_fauna):
+        fauna = get_object_or_404(Parrafos, id_fauna = id_fauna)
+        serializer = FaunasSerializer(fauna, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_fauna):
-        try:
-            fauna = Faunas.objects.get(id_fauna = id_fauna)
-            fauna.delete()
-            return Response(status = 204)
-        except Faunas.DoesNotExist:
-            return Response(status = 404)
+        fauna = get_object_or_404(Faunas, id_fauna = id_fauna)
+        fauna.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
     
 class FlorasView(APIView):
     def get(self, request):
@@ -32,15 +38,19 @@ class FlorasView(APIView):
         serializer = FlorasSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = 201)
-        return Response(serializer.errors, status = 400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_flora):
+        parrafo = get_object_or_404(Parrafos, id_flora = id_flora)
+        serializer = ParrafosSerializer(parrafo, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_flora):
-        try:
-            flora = Floras.objects.get(id_flora = id_flora)
-            flora.delete()
-            return Response(status = 204)
-        except Floras.DoesNotExist:
-            return Response(status = 404)
+        flora = get_object_or_404(Floras, id_flora = id_flora)
+        flora.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
 
 class ImagenesView(APIView):
     def get(self, request):
@@ -51,15 +61,19 @@ class ImagenesView(APIView):
         serializer = ImagenesSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = 201)
-        return Response(serializer.errors, status = 400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_imagen):
+        imagen = get_object_or_404(Imagenes, id_imagen = id_imagen)
+        serializer = ImagenesSerializer(imagen, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_imagen):
-        try:
-            imagen = Imagenes.objects.get(id_imagen = id_imagen)
-            imagen.delete()
-            return Response(status = 204)
-        except Imagenes.DoesNotExist:
-            return Response(status = 404)
+        imagen = get_object_or_404(Imagenes, id_imagen = id_imagen)
+        imagen.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
     
 class ParquesView(APIView):
     def get(self, request):
@@ -70,15 +84,19 @@ class ParquesView(APIView):
         serializer = ParquesSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = 201)
-        return Response(serializer.errors, status = 400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_parque):
+        parque = get_object_or_404(Parques, id_parque = id_parque)
+        serializer = ParquesSerializer(parque, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_parque):
-        try:
-            parque = Parques.objects.get(id_parque = id_parque)
-            parque.delete()
-            return Response(status = 204)
-        except Parques.DoesNotExist:
-            return Response(status = 404)
+        parque = get_object_or_404(Parques, id_parque = id_parque)
+        parque.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
     
 class ParrafosView(APIView):
     def get(self, request):
@@ -89,15 +107,19 @@ class ParrafosView(APIView):
         serializer = ParrafosSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status = 201)
-        return Response(serializer.errors, status = 400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_parrafo):
+        parrafo = get_object_or_404(Parrafos, id_parrafo = id_parrafo)
+        serializer = ParrafosSerializer(parrafo, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_parrafo):
-        try:
-            parrafo = Parrafos.objects.get(id_parrafo = id_parrafo)
-            parrafo.delete()
-            return Response(status = 204)
-        except Parrafos.DoesNotExist:
-            return Response(status = 404)
+        parrafo = get_object_or_404(Parrafos, id_parrafo = id_parrafo)
+        parrafo.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
     
 class UsuariosView(APIView):
     def get(self, request):
@@ -105,15 +127,19 @@ class UsuariosView(APIView):
         serializer = UsuariosSerializer(usuarios, many = True)
         return Response(serializer.data)
     def post(self, request):
-        serializer =UsuariosSerializer(data=request.data)
+        serializer =UsuariosSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status= 201)
-        return Response(serializer.errors, status=400)
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def put(self, request, id_usuario):
+        usuario = get_object_or_404(Usuarios, id_usuario = id_usuario)
+        serializer = UsuariosSerializer(usuario, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     def delete(self, request, id_usuario):
-        try:
-            usuario = Usuarios.objects.get(id_usuario = id_usuario)
-            usuario.delete()
-            return Response(status = 204)
-        except Usuarios.DoesNotExist:
-            return Response(status = 404)
+        usuario = get_object_or_404(Usuarios, id_usuario = id_usuario)
+        usuario.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
