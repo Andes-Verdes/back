@@ -86,12 +86,12 @@ class ParquesFloras(models.Model):
 class Parrafos(models.Model):
     id_parrafo = models.AutoField(primary_key=True)
     descripcion = models.TextField()
+    numero_de_parrafo = models.IntegerField()
     id_parque = models.ForeignKey(Parques, models.DO_NOTHING, db_column='id_parque')
     id_fauna = models.ForeignKey(Faunas, models.DO_NOTHING, db_column='id_fauna')
     id_flora = models.ForeignKey(Floras, models.DO_NOTHING, db_column='id_flora')
 
     class Meta:
-        managed = False
         db_table = 'parrafos'
 
 
