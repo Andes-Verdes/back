@@ -15,7 +15,7 @@ class DjangoMigrations(models.Model):
     applied = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'django_migrations'
 
 
@@ -25,7 +25,7 @@ class Faunas(models.Model):
     nombre = models.CharField(max_length=45)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'faunas'
 
 
@@ -34,7 +34,7 @@ class FaunasHasParques(models.Model):
     id_parque = models.ForeignKey('Parques', models.DO_NOTHING, db_column='id_parque')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'faunas_has_parques'
         unique_together = (('id_fauna', 'id_parque'),)
 
@@ -45,7 +45,7 @@ class Floras(models.Model):
     nombre = models.CharField(max_length=45)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'floras'
 
 
@@ -59,7 +59,7 @@ class Imagenes(models.Model):
     is_carrusel = models.TextField()  # This field type is a guess.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'imagenes'
 
 
@@ -69,7 +69,7 @@ class Parques(models.Model):
     subtitulo = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'parques'
 
 
@@ -78,7 +78,7 @@ class ParquesFloras(models.Model):
     id_flora = models.ForeignKey(Floras, models.DO_NOTHING, db_column='id_flora')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'parques_floras'
         unique_together = (('id_parque', 'id_flora'),)
 
@@ -86,22 +86,31 @@ class ParquesFloras(models.Model):
 class Parrafos(models.Model):
     id_parrafo = models.AutoField(primary_key=True)
     descripcion = models.TextField()
-    numero_de_parrafo = models.IntegerField()
+    numero_de_parrafo = models.IntegerField(null=True, blank=True)
     id_parque = models.ForeignKey(Parques, models.DO_NOTHING, db_column='id_parque')
     id_fauna = models.ForeignKey(Faunas, models.DO_NOTHING, db_column='id_fauna')
     id_flora = models.ForeignKey(Floras, models.DO_NOTHING, db_column='id_flora')
 
     class Meta:
+        managed = True
         db_table = 'parrafos'
 
 
 class Usuarios(models.Model):
+    ROLES = (
+        ('admin', 'Administrador'),
+        ('user', 'Usuario'),
+    )
     id_usuario = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=45)
     apellido = models.CharField(max_length=45)
     contraseña = models.CharField(max_length=45)
     correo = models.CharField(max_length=45)
+    rol = models.CharField(max_length=10, choices=ROLES, default='user')
 
+    def __str__(self):
+        return f"{self.nombre} ({self.rol})"
+    
     class Meta:
-        managed = False
+        managed = True
         db_table = 'usuarios'

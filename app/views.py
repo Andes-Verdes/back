@@ -143,3 +143,14 @@ class UsuariosView(APIView):
         usuario = get_object_or_404(Usuarios, id_usuario = id_usuario)
         usuario.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
+    
+class LoginView(APIView):
+    def post(self, request):
+        correo = request.data.get("correo")
+        contraseña = request.data.get("contraseña")
+        try:
+            usuario = Usuarios.objects.get(correo = correo, contraseña=contraseña)
+            serializer = UsuariosSerializer(usuario)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        except Usuarios.DoesNotExist:
+            return Response({"error": "Credenciales inválida"}, status = status.HTTP_401_UNAUTHORIZED)
