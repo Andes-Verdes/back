@@ -154,3 +154,15 @@ class LoginView(APIView):
             return Response(serializer.data, status = status.HTTP_200_OK)
         except Usuarios.DoesNotExist:
             return Response({"error": "Credenciales inválida"}, status = status.HTTP_401_UNAUTHORIZED)
+
+class SignUpView(APIView):
+    def post(self, request):
+        data = request.data.copy()
+        data['rol'] = 'user'
+        if Usuarios.objects(correo = data.get('correr')).exists():
+            return Response({"error": "El correo ya esta registrado."}, status = status.HTTP_400_BAD_REQUEST)
+        serializer = UsuariosSerializer(data = data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Usuario registrado exitosamente."}, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
