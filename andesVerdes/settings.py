@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -80,13 +80,17 @@ WSGI_APPLICATION = 'andesVerdes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'parques_db',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('DATABASE_NAME', 'ba9dkt5s3frplcb50gd'),
+        'USER': os.getenv('DATABASE_USER', 'u5okrypubi7ulxwm'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'T0zIB7611A0ml5AVOljb'),
+        'HOST': os.getenv('DATABASE_HOST', 'ba9dkt5s3frplcb50gd-mysql.services.clever-cloud.com'),
+        'PORT': os.getenv('DATABASE_PORT', '3306'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
 
 
 # Password validation
