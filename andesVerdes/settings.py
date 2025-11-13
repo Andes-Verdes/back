@@ -85,3 +85,52 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
 # CORS_ALLOW_ALL_ORIGINS = True
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Mantiene los loggers por defecto de Django
+
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} [{name}] {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname}: {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'console': {  # Para mostrar logs en consola
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {  # Para guardar logs en un archivo
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'api.log'),
+            'formatter': 'verbose',
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {  # Errores de HTTP
+            'handlers': ['console', 'file'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'api': {  # Tu logger personalizado para DRF
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+

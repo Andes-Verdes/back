@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+import logging
+
+logger = logging.getLogger('api')
 
 class FaunasView(APIView):
     def get(self, request):
@@ -123,9 +126,14 @@ class ParrafosView(APIView):
     
 class UsuariosView(APIView):
     def get(self, request):
-        usuarios = Usuarios.objects.all()
-        serializer = UsuariosSerializer(usuarios, many = True)
-        return Response(serializer.data)
+        try:
+            usuarios = Usuarios.objects.all()
+            serializer = UsuariosSerializer(usuarios, many = True)
+            return Response(serializer.data)
+        except Exception as e:
+            logger.error(f"Error al crear usuario: {e}")
+            return Response({"error": "Error interno del servidor"}, status=500)
+
     def post(self, request):
         serializer =UsuariosSerializer(data = request.data)
         if serializer.is_valid():
