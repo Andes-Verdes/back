@@ -1,7 +1,12 @@
 from django.urls import path
 from .views import FaunasView, FlorasView, UsuariosView, ImagenesView, ParquesView, ParrafosView, LoginView, SignUpView
+from django.http import JsonResponse
+
+def root_view(request):
+    return JsonResponse({"message": "API funcionando correctamente"})
 
 urlpatterns = [
+    path('', root_view),
     path('faunas/', FaunasView.as_view()),      #Gestion de Faunas
     path('floras/', FlorasView.as_view()),      #Gestion de Floras
     path('usuarios/', UsuariosView.as_view()),  #Gestion de Usuarios
