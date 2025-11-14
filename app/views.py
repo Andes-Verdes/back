@@ -154,8 +154,8 @@ class UsuariosView(APIView):
     
 class LoginView(APIView):
     def post(self, request):
-        correo = request.data.get("correo")
-        contraseña = request.data.get("contraseña")
+        correo = request.data.get("email")
+        contraseña = request.data.get("password")
         try:
             usuario = Usuarios.objects.get(correo = correo, contraseña=contraseña)
             serializer = UsuariosSerializer(usuario)
@@ -167,7 +167,7 @@ class SignUpView(APIView):
     def post(self, request):
         data = request.data.copy()
         data['rol'] = 'user'
-        if Usuarios.objects.filter(correo = data.get('correo')).exists():
+        if Usuarios.objects.filter(email = data.get('email')).exists():
             return Response({"error": "El correo ya esta registrado."}, status = status.HTTP_400_BAD_REQUEST)
         serializer = UsuariosSerializer(data = data)
         if serializer.is_valid():

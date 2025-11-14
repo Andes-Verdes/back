@@ -1,16 +1,6 @@
 from django.db import models
 
 
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = True
-        db_table = 'django_migrations'
-
 
 class Faunas(models.Model):
     id_fauna = models.AutoField(primary_key=True)
@@ -94,11 +84,11 @@ class Usuarios(models.Model):
         ('admin', 'Administrador'),
         ('user', 'Usuario'),
     )
-    id_usuario = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=45)
-    apellido = models.CharField(max_length=45)
-    contraseña = models.CharField(max_length=45)
-    correo = models.CharField(max_length=45)
+    id_user = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=45)
+    surname = models.CharField(max_length=45)
+    password = models.CharField(max_length=45)
+    email = models.CharField(max_length=45)
     rol = models.CharField(max_length=10, choices=ROLES, default='user')
 
     def __str__(self):

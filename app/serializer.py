@@ -46,4 +46,4 @@ class ParrafosSerializer(serializers.ModelSerializer):
 class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id_usuario', 'nombre', 'apellido', 'correo', 'rol'] #No conviene devolver la contraseña profe
+        fields = ['id_user', 'name', 'surname', 'email', 'rol'] #No conviene devolver la contraseña profe
