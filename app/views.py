@@ -167,7 +167,7 @@ class SignUpView(APIView):
     def post(self, request):
         data = request.data.copy()
         data['rol'] = 'user'
-        if Usuarios.objects(correo = data.get('correr')).exists():
+        if Usuarios.objects.filter(correo = data.get('correo')).exists():
             return Response({"error": "El correo ya esta registrado."}, status = status.HTTP_400_BAD_REQUEST)
         serializer = UsuariosSerializer(data = data)
         if serializer.is_valid():
