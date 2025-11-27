@@ -10,10 +10,15 @@ import logging
 logger = logging.getLogger('api')
 
 class FaunasView(APIView):
-    def get(self, request):
-        faunas = Faunas.objects.all()
-        serializer = FaunasSerializer(faunas, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            fauna = get_object_or_404(Faunas, pk=pk)
+            serializer = FaunasSerializer(fauna)
+            return Response(serializer.data)
+        else:
+            faunas = Faunas.objects.all()
+            serializer = FaunasSerializer(faunas, many=True)
+            return Response(serializer.data)
     def post(self, request):
         serializer = FaunasSerializer(data=request.data)
         if serializer.is_valid():
@@ -33,11 +38,17 @@ class FaunasView(APIView):
         fauna = get_object_or_404(Faunas, pk=pk)
         fauna.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 class FlorasView(APIView):
-    def get(self, request):
-        floras = Floras.objects.all()
-        serializer = FlorasSerializer(floras, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            flora = get_object_or_404(Floras, pk=pk)
+            serializer = FlorasSerializer(flora)
+            return Response(serializer.data)
+        else:
+            floras = Floras.objects.all()
+            serializer = FlorasSerializer(floras, many=True)
+            return Response(serializer.data)
     def post(self, request):
         serializer = FlorasSerializer(data=request.data)
         if serializer.is_valid():
@@ -59,10 +70,15 @@ class FlorasView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ImagenesView(APIView):
-    def get(self, request):
-        imagenes = Imagenes.objects.all()
-        serializer = ImagenesSerializer(imagenes, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            imagen = get_object_or_404(Imagenes, pk=pk)
+            serializer = ImagenesSerializer(imagen)
+            return Response(serializer.data)
+        else:
+            imagenes = Imagenes.objects.all()
+            serializer = ImagenesSerializer(imagenes, many=True)
+            return Response(serializer.data)
     def post(self, request):
         serializer = ImagenesSerializer(data=request.data)
         if serializer.is_valid():
@@ -82,11 +98,17 @@ class ImagenesView(APIView):
         imagen = get_object_or_404(Imagenes, pk=pk)
         imagen.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 class ParquesView(APIView):
-    def get(self, request):
-        parques = Parques.objects.all()
-        serializer = ParquesSerializer(parques, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            parque = get_object_or_404(Parques, pk=pk)
+            serializer = ParquesSerializer(parque)
+            return Response(serializer.data)
+        else:
+            parques = Parques.objects.all()
+            serializer = ParquesSerializer(parques, many=True)
+            return Response(serializer.data)
     def post(self, request):
         serializer = ParquesSerializer(data=request.data)
         if serializer.is_valid():
@@ -108,10 +130,15 @@ class ParquesView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class ParrafosView(APIView):
-    def get(self, request):
-        parrafos = Parrafos.objects.all()
-        serializer = ParrafosSerializer(parrafos, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            parrafo = get_object_or_404(Parrafos, pk=pk)
+            serializer = ParrafosSerializer(parrafo)
+            return Response(serializer.data)
+        else:
+            parrafos = Parrafos.objects.all()
+            serializer = ParrafosSerializer(parrafos, many=True)
+            return Response(serializer.data)
     def post(self, request):
         serializer = ParrafosSerializer(data=request.data)
         if serializer.is_valid():
@@ -133,11 +160,19 @@ class ParrafosView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UsuariosView(APIView):
-    def get(self, request):
+    def get(self, request, pk=None):
         try:
+            if pk is not None:
+                # GET detalle
+                usuario = get_object_or_404(Usuarios, pk=pk)
+                serializer = UsuariosSerializer(usuario)
+                return Response(serializer.data)
+
+            # GET lista
             usuarios = Usuarios.objects.all()
             serializer = UsuariosSerializer(usuarios, many=True)
             return Response(serializer.data)
+
         except Exception as e:
             logger.error(f"Error al obtener usuarios: {e}")
             return Response({"error": "Error interno del servidor"}, status=500)
